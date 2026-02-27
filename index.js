@@ -28,6 +28,7 @@ async function run() {
         // Connect to the "sample_mflix" database and access its "movies" collection
     const database = client.db("coffeeDB");
     const coffeCollection = database.collection("coffees");
+    const userCollection = database.collection('users');
 
     app.get('/coffees', async(req, res) => {
         const result = await coffeCollection.find().toArray();
@@ -66,6 +67,14 @@ async function run() {
         const id = req.params.id;
         const query = {_id: new ObjectId(id)};
         const result = await coffeCollection.deleteOne(query);
+        res.send(result);
+    })
+
+    // User related API
+    app.post('/users', async(req, res) => {
+        const user = req.body;
+        console.log(user);
+        const result = await userCollection.insertOne(user);
         res.send(result);
     })
 
